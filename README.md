@@ -1,13 +1,13 @@
 # Auctioneer-OctoWoW
 
 The classic **Auctioneer** auction-house addon for 1.12 (vanilla) clients, bundled
-with the two helper addons it needs and patched to load on OctoWoW. Current release: **v1.9.3**.
+with the two helper addons it needs and patched to load on OctoWoW. Current release: **v1.9.4**.
 
 | Addon | Version | What it does |
 |---|---|---|
-| Auctioneer | 3.6.2-octo-v1.9.3 (Platypus) | Scans the auction house and shows price info (**side scan panel**, **resumable scans**, **subcategory scans**, **Item Scan/Search**, **cheapest-first Browse sorting**, **item name suggestions**, a reworked **Search Auctions** tab, Post Auctions improvements and **`/auc-glossary`**, see below) |
-| EnhTooltip | 3.8.0-octo-v1.9.3 (Kangaroo) | Adds Auctioneer's extra lines to item tooltips |
-| Stubby | 3.8.0-octo-v1.9.3 (Kangaroo) | Loads Auctioneer and EnhTooltip when they're needed (**patched**, see below) |
+| Auctioneer | 3.6.2-octo-v1.9.4 (Platypus) | Scans the auction house and shows price info (**side scan panel**, **resumable scans**, **subcategory scans**, **Item Scan/Search**, **cheapest-first Browse sorting**, **item name suggestions**, a reworked **Search Auctions** tab, Post Auctions improvements and **`/auc-glossary`**, see below) |
+| EnhTooltip | 3.8.0-octo-v1.9.4 (Kangaroo) | Adds Auctioneer's extra lines to item tooltips |
+| Stubby | 3.8.0-octo-v1.9.4 (Kangaroo) | Loads Auctioneer and EnhTooltip when they're needed (**patched**, see below) |
 
 ## Install
 
@@ -24,19 +24,19 @@ with the two helper addons it needs and patched to load on OctoWoW. Current rele
 
 ## Version numbers
 
-Each release has one number, like **v1.9.3**, used everywhere:
+Each release has one number, like **v1.9.4**, used everywhere:
 
-- on GitHub: the release is tagged `v1.9.3`, and its zip is `Auctioneer-OctoWoW-v1.9.3.zip`
-- in the game's AddOns list: all three addons show `-octo-v1.9.3`. The part before it is the
+- on GitHub: the release is tagged `v1.9.4`, and its zip is `Auctioneer-OctoWoW-v1.9.4.zip`
+- in the game's AddOns list: all three addons show `-octo-v1.9.4`. The part before it is the
   addon's own version: 3.6.2 for Auctioneer, 3.8.0 for EnhTooltip and Stubby.
-- in [CHANGES.md](CHANGES.md): the heading `v1.9.3`
+- in [CHANGES.md](CHANGES.md): the heading `v1.9.4`
 
 Releases count up as v1.9.1, v1.9.2 and so on. **v2.0** is kept for the finished version, so
 the 1.x numbers mean it's still being worked on.
 
 **Which version do I have?** Look at the end of each addon's description in the AddOns list
-on the character screen. For v1.9.3 that's `[3.6.2-octo-v1.9.3 (Platypus)]` for Auctioneer and
-`[3.8.0-octo-v1.9.3 (Kangaroo)]` for EnhTooltip and Stubby. If the three don't show the same
+on the character screen. For v1.9.4 that's `[3.6.2-octo-v1.9.4 (Platypus)]` for Auctioneer and
+`[3.8.0-octo-v1.9.4 (Kangaroo)]` for EnhTooltip and Stubby. If the three don't show the same
 version, some folders are left over from an older download: copy all three again.
 
 - v1.2 and v1.3 only showed the version on Auctioneer, e.g. `[3.6.2-octo-v1.3 (Platypus)]`.
@@ -265,8 +265,8 @@ of those finds auctions of the item but none that qualify, the line under the li
   being scanned, Browse shows it once the scan is done. It's skipped while another scan runs,
   since Browse is busy then. `/auctioneer post-browse off` turns it off.
   - Browse then lists **only that item**. The game's name search also finds longer names, so
-    "Iron Bar" brings up Dark Iron Bars too; those are hidden, and the line under the list says
-    how many, with a **Show all** button. Paging through the item keeps it that way; any other
+    "Iron Bar" brings up Dark Iron Bars too; those are hidden. Scrolled to the end of the list,
+    the line under it says how many, with a **Show all** button. Paging through the item keeps it that way; any other
     search shows everything again. Clicking, bidding and buying work on the rows as shown.
 - **Undercut by** slider (1-100%) under the auction list. The starting and buyout prices follow
   it as you drag. It only applies to the item in the slot; the next item starts at your setting

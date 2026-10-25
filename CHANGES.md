@@ -5,6 +5,24 @@ Releases are numbered v1.2, v1.3 and so on, then v1.9.1, v1.9.2 until the finish
 v1.4, all three addons carry the release's number after `-octo-` (see *Version numbers* in the
 README).
 
+## v1.9.4 (2026-10-25)
+
+### Auctioneer 3.6.2-octo-v1.9.4
+
+- Browse's one-item view (after a Post Auctions -> Browse search, or a name picked from the
+  suggestions): the line saying how many auctions are hidden, and its **Show all** button, sat
+  on top of the last row when the list was full, and showed even with nothing hidden (a player's
+  screenshot). Now they show only when something is hidden, and, like Blizzard's own "Items
+  1 - 50" line in the same place, only once the last row is empty; the list scrolls one row
+  further to make room, as Blizzard's does with more pages. `AHScanning.lua`,
+  `browseFilterUpdate()`.
+- `Auctioneer/Auctioneer.toc`: version changed to `3.6.2-octo-v1.9.4`.
+
+### EnhTooltip and Stubby 3.8.0-octo-v1.9.4
+
+- `EnhTooltip/EnhTooltip.toc` and `Stubby/Stubby.toc`: version changed to `3.8.0-octo-v1.9.4`, to
+  match the release. No code changes.
+
 ## v1.9.3 (2026-10-25)
 
 ### Auctioneer 3.6.2-octo-v1.9.3
