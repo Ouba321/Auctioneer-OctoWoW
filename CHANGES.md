@@ -1,8 +1,224 @@
 # Changes
 
 Changes made to the original addons, as the GPL asks. Newest first, one section per release.
-Releases are numbered v1.2, v1.3 and so on. From v1.4, all three addons carry the release's
-number after `-octo-` (see *Version numbers* in the README).
+Releases are numbered v1.2, v1.3 and so on, then v1.9.1, v1.9.2 until the finished v2.0. From
+v1.4, all three addons carry the release's number after `-octo-` (see *Version numbers* in the
+README).
+
+## v1.9.3 (2026-10-25)
+
+### Auctioneer 3.6.2-octo-v1.9.3
+
+- The Post Auctions undercut slider moves the prices for an item you already have listed too (a
+  player's report). When your auction was the cheapest, the price stayed at your own unless
+  undercutting the next one came out higher, and always when the next one was yours as well, so
+  the slider did nothing. Now it's priced against the cheapest auction that isn't yours, with the
+  slider's undercut, or against the market price when nobody else sells it.
+  `AucStatistic.lua`: `findLowestOtherAuction()`; `getHSP()` uses it for its second price when
+  the Post tab passes an undercut and the cheapest auction is yours. `AuctionFramePost.lua`,
+  `AuctionFramePost_UpdatePriceModels()`: uses that price whenever you're the cheapest.
+  Tooltips and everything else that doesn't pass an undercut are unchanged.
+- `Auctioneer/Auctioneer.toc`: version changed to `3.6.2-octo-v1.9.3`.
+
+### EnhTooltip and Stubby 3.8.0-octo-v1.9.3
+
+- `EnhTooltip/EnhTooltip.toc` and `Stubby/Stubby.toc`: version changed to `3.8.0-octo-v1.9.3`, to
+  match the release. No code changes.
+
+## v1.9.2 (2026-10-25)
+
+### Auctioneer 3.6.2-octo-v1.9.2
+
+- Search Auctions (`AuctionFrameSearch.lua`), from a player's screenshot:
+  - The tab starts on the **Item** search type, which lists every auction for a name. It started
+    on **Bids**, which lists bargains only (ending soon, at least 30% under market, 50s profit by
+    default), so a search for an item usually found nothing and looked broken.
+  - A Bids or Buyouts search for an item that finds auctions, but none passing its settings, says
+    so under the list ("3 auctions found, none a bargain by these settings";
+    `AuctionFrameSearch_NoBargainText()`), instead of "Nothing found in your scans."
+  - The list fills in page by page while the item's scan runs ("Scanning the AH for Iron Bar...
+    5 found so far"), not only when it ends. `AHScanning.lua`: `itemScanPage()` after each page of
+    an Item Scan; `AuctionFrameSearch_RefreshDuringItemScan()`.
+  - Search and Save are the same width, side by side and as wide as the item box above them.
+- `Auctioneer/Auctioneer.toc`: version changed to `3.6.2-octo-v1.9.2`.
+
+### EnhTooltip and Stubby 3.8.0-octo-v1.9.2
+
+- `EnhTooltip/EnhTooltip.toc` and `Stubby/Stubby.toc`: version changed to `3.8.0-octo-v1.9.2`, to
+  match the release. No code changes.
+
+## v1.9.1 (2026-10-25)
+
+### Auctioneer 3.6.2-octo-v1.9.1
+
+- Shift+Right-click on a bag item fills the side panel's Item Scan box on every tab again. On
+  Search Auctions it went to that tab's search box, the same as v1.9's new plain right-click.
+  `AucUtil.lua`, `containerFrameItemButtonOnClick()`.
+- Search Auctions (`AuctionFrameSearch.lua`), from a player's feedback:
+  - Every search type with an item name (Bids, Buyouts and Item) shows your saved scans at once
+    and scans the auction house for the name, then runs again on what it found
+    (`AuctionFrameSearch_Search()`). Before, only Item searches scanned, with an empty list
+    meanwhile. A Bid or Buyout pressed during the scan waits for it, as the bid manager doesn't
+    start while a scan runs.
+  - Saved searches: a **Save** button next to each Search button (`AuctionFrameSearch_SetupLayout()`,
+    `AuctionFrameSearch_SaveCurrentSearch()`), named after the item, or the search type and
+    category (`AuctionFrameSearch_SavedSearchName()`). The top row is the Saved Searches dropdown,
+    now drawn normally and showing the search picked, and **Delete** (was Remove), which deletes
+    that one; the name box and the top Save button are hidden. The list ticks the search shown
+    by name, not by row number, so saving or deleting doesn't move the tick.
+  - The line under the results is shorter ("12 auctions, seen 5 min to 3 h ago", "Nothing found
+    in your scans.") and limited to 375 pixels, so it no longer runs into the Bid button.
+- `Auctioneer.lua`: the `search-scan` help and glossary lines follow the new behaviour.
+- `Auctioneer/Auctioneer.toc`: version changed to `3.6.2-octo-v1.9.1`.
+- Version numbers: releases now count v1.9.1, v1.9.2 and so on; v2.0 is kept for the finished
+  version (README, *Version numbers*).
+
+### EnhTooltip and Stubby 3.8.0-octo-v1.9.1
+
+- `EnhTooltip/EnhTooltip.toc` and `Stubby/Stubby.toc`: version changed to `3.8.0-octo-v1.9.1`, to
+  match the release. No code changes.
+
+## v1.9 (2026-10-25)
+
+### Auctioneer 3.6.2-octo-v1.9
+
+- Search Auctions, from the user's feedback:
+  - A plain right-click on a bag item puts its name in the item search box of the search type
+    showing (Shift+Right-click already did), marked as picked so it's searched exactly.
+    `AucUtil.lua`, `containerFrameItemButtonOnClick()`.
+  - Category Restriction has subcategories, in a submenu on each category.
+    `AuctionFrameSearch.lua`: `AuctionFrameSearch_CategoryDropDown_Initialize(level)` builds both
+    levels and ticks rows itself; the choice is kept on the dropdown (`AuctionFrameSearch_SetCategory()`,
+    `AuctionFrameSearch_CategoryFilter()`), since the game's selection by row number ticked the
+    wrong rows across levels. `AucFilter.lua`: `categoryMatches()` checks a subcategory by the
+    item's `GetItemInfo` subclass, in the bid, buyout and plain filters.
+  - Saved searches: saving without a name used the item's name, or asks for one, instead of
+    saving under "", which showed as a second blank row and made the list look a row off; an
+    old unnamed one is listed as "(no name)". Saved categories keep their subcategory ("6/2";
+    old numbers still load). Loading a saved Item search initialized the category dropdown's
+    label instead of the dropdown and stopped with an error; fixed. A dropdown never opened no
+    longer breaks saving (`%d` of nil).
+- `Auctioneer/Auctioneer.toc`: version changed to `3.6.2-octo-v1.9`.
+
+### EnhTooltip and Stubby 3.8.0-octo-v1.9
+
+- `EnhTooltip/EnhTooltip.toc` and `Stubby/Stubby.toc`: version changed to `3.8.0-octo-v1.9`, to
+  match the release. No code changes.
+
+## v1.8 (2026-10-25)
+
+### Auctioneer 3.6.2-octo-v1.8
+
+- The Search Auctions tab, reworked. `AuctionFrameSearch.lua`:
+  - Item searches with one name run a quiet Item Scan for it first and show the results when it
+    ends (`AuctionFrameSearchPlain_SearchButton_OnClick()`, `AuctionFrameSearch_RefreshAfterItemScan()`),
+    with an empty list meanwhile; not while another scan runs or for a name scanned in the last
+    minute. New setting `search-scan` (`AucCore.lua`, default on; `AucCommand.lua`;
+    `/auctioneer-help`; `/auc-glossary`).
+  - Best deals first: Item searches show Bid Per and Buyout Per and sort cheapest per item first,
+    Bid and Buyout searches most profit first (they were sorted by time left, and the Buyout
+    search by % less, smallest first). Sorting by buyout, an auction without one counts as the
+    highest price.
+  - The line under the list gives the number of results and how long ago they were seen
+    (`AuctionFrameSearch_ShowResultsAge()`), and each result's tooltip when it was seen.
+  - Auctions an unfinished scan hasn't seen again (the snapshot's "dirty" mark) are greyed out,
+    with "Possibly gone" in their tooltip.
+- `AucFilter.lua`: `nameMatches()` replaces the name check in the bid, buyout and plain filters.
+  It matches as plain text, so brackets in a typed name no longer break the search, and exactly
+  for a name picked from the suggestions (a new `exact` argument).
+- `AucSuggest.lua`: a picked name is remembered (`isPicked()`); on Browse it lists only that item,
+  using the one-item filter from v1.7.
+- `AHScanning.lua`: `itemScanDone()` tells Post Auctions and Search Auctions when an Item Scan
+  ends or is stopped; `itemScannedRecently()` remembers when each name was last scanned to the end.
+- `AucScanner.lua`: the suggestion setup is skipped when `AucSuggest.lua` isn't loaded (after
+  `/reload` instead of a restart), so the rest of the AH setup, the Search and Post tabs
+  included, still happens.
+- `Auctioneer/Auctioneer.toc`: version changed to `3.6.2-octo-v1.8`.
+
+### EnhTooltip and Stubby 3.8.0-octo-v1.8
+
+- `EnhTooltip/EnhTooltip.toc` and `Stubby/Stubby.toc`: version changed to `3.8.0-octo-v1.8`, to
+  match the release. No code changes.
+
+## v1.7 (2026-10-25)
+
+### Auctioneer 3.6.2-octo-v1.7
+
+- After the Post Auctions -> Browse search, Browse lists only the slotted item: the game's name
+  search also finds longer names ("Iron Bar" finds Dark Iron Bar). `AHScanning.lua`:
+  `browseFilterUpdate()`, a Stubby hook before `AuctionFrameBrowse_Update`, has Blizzard's own
+  code draw the list while `GetNumAuctionItems`, `GetAuctionItemInfo`, `GetAuctionItemTimeLeft`
+  and `GetSelectedAuctionItem` answer for the matching auctions only, puts them back, then sets
+  each row's ID so that clicks, tooltips, links, Bid and Buyout use the real auction's index.
+  If the drawing fails it shows the full list instead. `AucScanner.lua`, `configureAH()`: wraps
+  `QueryAuctionItems` so any search for another name ends the filter, and adds the **Show all**
+  button.
+- Item names are suggested as you type in the Browse Name box and the Search Auctions name
+  boxes, with this character's profession reagents first. New file `AucSuggest.lua` (in
+  `Auctioneer.xml`'s script list), attached in `configureAH()`. `Auctioneer.lua`: new Stubby boot
+  code "Reagents" reads the profession windows (`TRADE_SKILL_SHOW`/`UPDATE`, `CRAFT_SHOW`/`UPDATE`)
+  and saves each profession's reagents, weighted by recipe colour, in Stubby's per-character
+  settings, so it works while Auctioneer isn't loaded.
+- `/auctioneer-help` lists every `/auctioneer` command with what it does, grouped by topic and
+  including this bundle's own; `/auctioneer-help <word>` shows only the lines with that word.
+  `Auctioneer.lua`: new Stubby boot code "Help", so it works before Auctioneer is loaded.
+  `AucCommand.lua`, `chatPrintHelp()`: the original `/auctioneer help` ends with a pointer to it.
+- `name-suggest` in `AucCore.lua` (default on), `AucCommand.lua`
+  (`/auctioneer name-suggest on|off`) and `/auc-glossary`.
+- `Auctioneer/Auctioneer.toc`: version changed to `3.6.2-octo-v1.7`.
+
+### EnhTooltip and Stubby 3.8.0-octo-v1.7
+
+- `EnhTooltip/EnhTooltip.toc` and `Stubby/Stubby.toc`: version changed to `3.8.0-octo-v1.7`, to
+  match the release. No code changes.
+
+## v1.6 (2026-10-25)
+
+### Auctioneer 3.6.2-octo-v1.6
+
+- Clicking the Browse tab from Post Auctions with an item in the slot searches Browse for that
+  item, so the suggested price can be checked against what's for sale (the user's idea).
+  `AuctioneerUI.lua`, `AuctioneerUI_AuctionFrameTab_OnClickHook()`: on a click on the tab
+  itself, not a switch made by code like opening the AH or an Alt+Right-click search.
+  `AHScanning.lua`: `showItemOnBrowse()` queues the same name search the end of an Item Scan
+  uses; if that item is being scanned it waits for the scan, and another scan running skips it.
+- `post-browse` in `AucCore.lua` (default on), `AucCommand.lua`
+  (`/auctioneer post-browse on|off`) and `/auc-glossary`.
+- `Auctioneer/Auctioneer.toc`: version changed to `3.6.2-octo-v1.6`.
+
+### EnhTooltip and Stubby 3.8.0-octo-v1.6
+
+- `EnhTooltip/EnhTooltip.toc` and `Stubby/Stubby.toc`: version changed to `3.8.0-octo-v1.6`, to
+  match the release. No code changes.
+
+## v1.5 (2026-10-25)
+
+### Auctioneer 3.6.2-octo-v1.5
+
+- The side scan panel's **Stop** button reacts to clicks again: it looked usable during a scan,
+  but nothing happened. The panel takes the mouse, so clicks on it don't fall through to the
+  game world, and the Stop button and progress bar, defined inside the panel, could end up below
+  it once the panel was moved onto the AH window. The panel then took every click on Stop, which
+  v1.4's fix couldn't help with. `AucScanPanel.lua`: `keepControlsOnTop()`, run every frame from
+  `onUpdate()` and once from `configureAH()` in `AucScanner.lua`, keeps the panel's controls
+  above it.
+- The Browse tab's price column has a **Buyout** header next to **Current Bid**, so the list
+  can be sorted by buyout too. `AucScanner.lua`, `configureAH()`: creates
+  `AuctioneerBrowseBuyoutSort` from Blizzard's `AuctionSortButtonTemplate`; clicking it calls
+  `SortAuctionItems("list", "buyout")`. `browseSortHeaderUpdate()`, hooked after
+  `AuctionFrameBrowse_Update`, splits the column between the two headers and points the arrow.
+- Browse lists start sorted lowest price first when the AH opens. `AucScanner.lua`:
+  `applyBrowseSort()`, called from `auctHouseShow()`, sorts on the new setting `browse-sort`
+  (`buyout` by default, `bid` or `off`), with the other price breaking ties. The 1.12 client
+  sorts the page of auctions it has loaded, not the server's whole list.
+- `browse-sort` in `AucCore.lua`, `AucCommand.lua` (`/auctioneer browse-sort buyout|bid|off`)
+  and `/auc-glossary`.
+- `Auctioneer/Auctioneer.toc`: version changed to `3.6.2-octo-v1.5`.
+
+### EnhTooltip and Stubby 3.8.0-octo-v1.5
+
+- `EnhTooltip/EnhTooltip.toc` and `Stubby/Stubby.toc`: version changed to `3.8.0-octo-v1.5`, to
+  match the release. No code changes.
 
 ## v1.4 (2026-10-24)
 
