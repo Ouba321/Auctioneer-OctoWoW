@@ -1,13 +1,13 @@
 # Auctioneer-OctoWoW
 
 The classic **Auctioneer** auction-house addon for 1.12 (vanilla) clients, bundled
-with the two helper addons it needs and patched to load on OctoWoW. Current release: **v1.9.4**.
+with the two helper addons it needs and patched to load on OctoWoW. Current release: **v1.9.7**.
 
 | Addon | Version | What it does |
 |---|---|---|
-| Auctioneer | 3.6.2-octo-v1.9.4 (Platypus) | Scans the auction house and shows price info (**side scan panel**, **resumable scans**, **subcategory scans**, **Item Scan/Search**, **cheapest-first Browse sorting**, **item name suggestions**, a reworked **Search Auctions** tab, Post Auctions improvements and **`/auc-glossary`**, see below) |
-| EnhTooltip | 3.8.0-octo-v1.9.4 (Kangaroo) | Adds Auctioneer's extra lines to item tooltips |
-| Stubby | 3.8.0-octo-v1.9.4 (Kangaroo) | Loads Auctioneer and EnhTooltip when they're needed (**patched**, see below) |
+| Auctioneer | 3.6.2-octo-v1.9.7 (Platypus) | Scans the auction house and shows price info (**side scan panel**, **resumable scans**, **subcategory scans**, **Item Scan/Search**, **cheapest-first Browse sorting**, **item name suggestions**, a reworked **Search Auctions** tab, **cancelling several auctions at once**, Post Auctions improvements and **`/auc-glossary`**, see below) |
+| EnhTooltip | 3.8.0-octo-v1.9.7 (Kangaroo) | Adds Auctioneer's extra lines to item tooltips |
+| Stubby | 3.8.0-octo-v1.9.7 (Kangaroo) | Loads Auctioneer and EnhTooltip when they're needed (**patched**, see below) |
 
 ## Install
 
@@ -24,19 +24,19 @@ with the two helper addons it needs and patched to load on OctoWoW. Current rele
 
 ## Version numbers
 
-Each release has one number, like **v1.9.4**, used everywhere:
+Each release has one number, like **v1.9.7**, used everywhere:
 
-- on GitHub: the release is tagged `v1.9.4`, and its zip is `Auctioneer-OctoWoW-v1.9.4.zip`
-- in the game's AddOns list: all three addons show `-octo-v1.9.4`. The part before it is the
+- on GitHub: the release is tagged `v1.9.7`, and its zip is `Auctioneer-OctoWoW-v1.9.7.zip`
+- in the game's AddOns list: all three addons show `-octo-v1.9.7`. The part before it is the
   addon's own version: 3.6.2 for Auctioneer, 3.8.0 for EnhTooltip and Stubby.
-- in [CHANGES.md](CHANGES.md): the heading `v1.9.4`
+- in [CHANGES.md](CHANGES.md): the heading `v1.9.7`
 
 Releases count up as v1.9.1, v1.9.2 and so on. **v2.0** is kept for the finished version, so
 the 1.x numbers mean it's still being worked on.
 
 **Which version do I have?** Look at the end of each addon's description in the AddOns list
-on the character screen. For v1.9.4 that's `[3.6.2-octo-v1.9.4 (Platypus)]` for Auctioneer and
-`[3.8.0-octo-v1.9.4 (Kangaroo)]` for EnhTooltip and Stubby. If the three don't show the same
+on the character screen. For v1.9.7 that's `[3.6.2-octo-v1.9.7 (Platypus)]` for Auctioneer and
+`[3.8.0-octo-v1.9.7 (Kangaroo)]` for EnhTooltip and Stubby. If the three don't show the same
 version, some folders are left over from an older download: copy all three again.
 
 - v1.2 and v1.3 only showed the version on Auctioneer, e.g. `[3.6.2-octo-v1.3 (Platypus)]`.
@@ -249,6 +249,30 @@ of those finds auctions of the item but none that qualify, the line under the li
   no item after its type and category ("Buyouts: Weapon"); saving it again replaces it. Pick one
   in the **Saved Searches** list at the top to fill it all in, and **Delete** removes the one
   shown. A search saved without a name in an older version shows as **(no name)**.
+
+## Auctions tab: cancelling several at once
+
+- **Shift-click** your auctions to mark several, and Shift-click one again to unmark it. The
+  one you had selected counts as the first. A plain click goes back to selecting one.
+- **Alt-click** marks every auction from the last one you clicked to this one: click the first,
+  Alt-click the last. It counts down the whole list, so you can scroll in between. On a Mac
+  keyboard that's Cmd if the game gets Cmd as Alt (WoW only knows Shift, Ctrl and Alt), or
+  Option.
+- **Cancel Auction** then reads **Cancel 3 Auctions**, and one warning covers them all: the
+  deposits you lose, and what bids on them cost you (5% of each bid, as for one auction). One
+  selected auction gets the same warning, with its deposit.
+- **Deposits:** the game doesn't say what a posted auction's deposit was, so Auctioneer notes it
+  when you post, from either tab, and the warning shows exactly that. For an auction posted with
+  an older version it's worked out from the item's vendor price and time left: exact when it's
+  Very Long (a 24 hour auction), otherwise "at least" the smallest it could have been, since the
+  auction may have started longer.
+- They're cancelled one at a time, a moment apart, each one found again by its details, since
+  the list renumbers after every cancel. If the auction house closes halfway, the rest stay up
+  and the chat says how many.
+- A mark goes away when its auction changes (it gets a bid, or sells), and leaving the tab clears
+  the marks. After Shift- or Alt-clicking, or when the list has moved, Cancel Auction does
+  nothing until you click an auction again, so it can't cancel one you unmarked or one that
+  moved into the selected row.
 
 ## Post Auctions tab
 

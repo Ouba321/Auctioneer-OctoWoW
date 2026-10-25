@@ -5,6 +5,70 @@ Releases are numbered v1.2, v1.3 and so on, then v1.9.1, v1.9.2 until the finish
 v1.4, all three addons carry the release's number after `-octo-` (see *Version numbers* in the
 README).
 
+## v1.9.7 (2026-10-25)
+
+### Auctioneer 3.6.2-octo-v1.9.7
+
+- The chat message when Auctioneer loads said the original "Auctioneer v3.6.1 loaded"; it now says
+  "Auctioneer v3.6.2 loaded." (also the `/auctioneer help` header). `Auctioneer.lua`:
+  `Auctioneer.Version` is the number at the start of `Auctioneer.toc`'s `## Version` line, read
+  with `GetAddOnMetadata`, so it can't fall behind; the full bundle version stays in the AddOns
+  list. `AucStrings.lua`: a full stop after the English message. The "Version: 3.6.1" lines at the
+  top of the files are the original files' headers and stay as they were.
+- `Auctioneer/Auctioneer.toc`: version changed to `3.6.2-octo-v1.9.7`.
+
+### EnhTooltip and Stubby 3.8.0-octo-v1.9.7
+
+- `EnhTooltip/EnhTooltip.toc` and `Stubby/Stubby.toc`: version changed to `3.8.0-octo-v1.9.7`, to
+  match the release. No code changes.
+
+## v1.9.6 (2026-10-25)
+
+### Auctioneer 3.6.2-octo-v1.9.6
+
+- Auctions tab: Alt-click marks every auction from the last one clicked to this one, as range
+  selection does elsewhere (a player's idea; Cmd on a Mac keyboard where the game gets it as
+  Alt). `AuctioneerUI.lua`, `AuctioneerUI_AuctionsButtonOnClickHook()`: the last plain- or
+  Shift-clicked auction is remembered with its details, and a range only starts from it while
+  it's still in that place.
+- The single selection counts only while it's still on the auction you clicked
+  (`AuctioneerUI_TrustedSelection()`): Blizzard keeps the selection on the list position, so
+  after an auction sold or was cancelled, Cancel Auction could have cancelled the auction that
+  moved into it.
+- `Auctioneer/Auctioneer.toc`: version changed to `3.6.2-octo-v1.9.6`.
+
+### EnhTooltip and Stubby 3.8.0-octo-v1.9.6
+
+- `EnhTooltip/EnhTooltip.toc` and `Stubby/Stubby.toc`: version changed to `3.8.0-octo-v1.9.6`, to
+  match the release. No code changes.
+
+## v1.9.5 (2026-10-25)
+
+### Auctioneer 3.6.2-octo-v1.9.5
+
+- Auctions tab: Shift-click your auctions to mark several and cancel them together, with one
+  warning showing the deposits lost and the bid cost (a player's idea). `AuctioneerUI.lua`,
+  `AuctioneerUI_SetupAuctionsTab()` (called from `configureAH()` in `AucScanner.lua`):
+  - A Stubby hook before `AuctionsButton_OnClick` marks or unmarks on Shift-click; one after
+    `AuctionFrameAuctions_Update` lights the marked rows and counts them on the Cancel button.
+    Marks are positions with each auction's details, dropped when the auction there changes.
+  - Cancel Auction shows the new `AUCTIONEER_CANCEL_AUCTIONS` warning for the marked auctions,
+    or the one selected, instead of Blizzard's. On accepting, `AuctioneerCancelQueueFrame` sends
+    one `CancelAuction` every 0.2 seconds, each found again by its details (the list renumbers
+    after each cancel, and identical auctions aren't sent twice); it stops when the AH closes.
+  - Deposits: a Stubby hook before `StartAuction` notes what OctoWoW's `CalculateAuctionDeposit`
+    charges for the auction being posted (`AuctionConfig.deposits`, per realm and character,
+    kept 3 days). Older auctions are estimated with `AuctionFramePost_CalculateAuctionDeposit`
+    from the vendor price and time left.
+  - After Shift-clicks or a batch cancel, Blizzard's own single selection doesn't count until a
+    plain click, so Cancel can't hit an auction you unmarked or one that moved up the list.
+- `Auctioneer/Auctioneer.toc`: version changed to `3.6.2-octo-v1.9.5`.
+
+### EnhTooltip and Stubby 3.8.0-octo-v1.9.5
+
+- `EnhTooltip/EnhTooltip.toc` and `Stubby/Stubby.toc`: version changed to `3.8.0-octo-v1.9.5`, to
+  match the release. No code changes.
+
 ## v1.9.4 (2026-10-25)
 
 ### Auctioneer 3.6.2-octo-v1.9.4
