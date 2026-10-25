@@ -1,13 +1,13 @@
 # Auctioneer-OctoWoW
 
 The classic **Auctioneer** auction-house addon for 1.12 (vanilla) clients, bundled
-with the two helper addons it needs and patched to load on OctoWoW. Current release: **v1.4**.
+with the two helper addons it needs and patched to load on OctoWoW. Current release: **v1.9.3**.
 
 | Addon | Version | What it does |
 |---|---|---|
-| Auctioneer | 3.6.2-octo-v1.4 (Platypus) | Scans the auction house and shows price info (**side scan panel**, **resumable scans**, **subcategory scans**, **Item Scan/Search**, Post Auctions improvements and **`/auc-glossary`**, see below) |
-| EnhTooltip | 3.8.0-octo-v1.4 (Kangaroo) | Adds Auctioneer's extra lines to item tooltips |
-| Stubby | 3.8.0-octo-v1.4 (Kangaroo) | Loads Auctioneer and EnhTooltip when they're needed (**patched**, see below) |
+| Auctioneer | 3.6.2-octo-v1.9.3 (Platypus) | Scans the auction house and shows price info (**side scan panel**, **resumable scans**, **subcategory scans**, **Item Scan/Search**, **cheapest-first Browse sorting**, **item name suggestions**, a reworked **Search Auctions** tab, Post Auctions improvements and **`/auc-glossary`**, see below) |
+| EnhTooltip | 3.8.0-octo-v1.9.3 (Kangaroo) | Adds Auctioneer's extra lines to item tooltips |
+| Stubby | 3.8.0-octo-v1.9.3 (Kangaroo) | Loads Auctioneer and EnhTooltip when they're needed (**patched**, see below) |
 
 ## Install
 
@@ -24,19 +24,19 @@ with the two helper addons it needs and patched to load on OctoWoW. Current rele
 
 ## Version numbers
 
-Each release has one number, **v1.4**, **v1.5** and so on, used everywhere:
+Each release has one number, like **v1.9.3**, used everywhere:
 
-- on GitHub: the release is tagged `v1.4`, and its zip is `Auctioneer-OctoWoW-v1.4.zip`
-- in the game's AddOns list: all three addons show `-octo-v1.4`. The part before it is the
+- on GitHub: the release is tagged `v1.9.3`, and its zip is `Auctioneer-OctoWoW-v1.9.3.zip`
+- in the game's AddOns list: all three addons show `-octo-v1.9.3`. The part before it is the
   addon's own version: 3.6.2 for Auctioneer, 3.8.0 for EnhTooltip and Stubby.
-- in [CHANGES.md](CHANGES.md): the heading `v1.4`
+- in [CHANGES.md](CHANGES.md): the heading `v1.9.3`
 
-Every release gets the next number, however small. The first number only goes up for a big
-change, like saved data having to be reset.
+Releases count up as v1.9.1, v1.9.2 and so on. **v2.0** is kept for the finished version, so
+the 1.x numbers mean it's still being worked on.
 
 **Which version do I have?** Look at the end of each addon's description in the AddOns list
-on the character screen. For v1.4 that's `[3.6.2-octo-v1.4 (Platypus)]` for Auctioneer and
-`[3.8.0-octo-v1.4 (Kangaroo)]` for EnhTooltip and Stubby. If the three don't show the same
+on the character screen. For v1.9.3 that's `[3.6.2-octo-v1.9.3 (Platypus)]` for Auctioneer and
+`[3.8.0-octo-v1.9.3 (Kangaroo)]` for EnhTooltip and Stubby. If the three don't show the same
 version, some folders are left over from an older download: copy all three again.
 
 - v1.2 and v1.3 only showed the version on Auctioneer, e.g. `[3.6.2-octo-v1.3 (Platypus)]`.
@@ -44,6 +44,13 @@ version, some folders are left over from an older download: copy all three again
   auction house type
   `/script ChatFrame1:AddMessage("V: "..tostring(Auctioneer and Auctioneer.Core and Auctioneer.Core.Constants.FilterDefaults["pct-maxover"]))`:
   `V: 200` means 3.6.1-octo10, `V: nil` means older.
+
+## All commands
+
+Type **`/auctioneer-help`** in chat for every `/auctioneer` command with what it does, grouped by
+topic (scanning, bargains, selling, pricing, Browse, tooltips, setup), including the ones this
+bundle adds. **`/auctioneer-help scan`** shows just the lines containing "scan". The original
+`/auctioneer help` still works, but it predates this bundle's commands.
 
 ## What do HSP, BO and the rest mean?
 
@@ -152,9 +159,96 @@ search.
 - It's the same name search as Blizzard's Name box, so "Linen" also finds "Bolt of Linen Cloth".
 - It doesn't touch an unfinished full scan: Resume still continues that one afterwards.
 - Only auctions with a matching name are checked for being gone.
-- At the auction house, Shift+Right-click fills the panel's box. On the **Search Auctions** tab
-  it fills that tab's item search box instead. If you use LazyPig, its Shift+Right-click split
-  doesn't happen while the auction house is open; it still works everywhere else.
+- At the auction house, Shift+Right-click fills the panel's box, on every tab. (On the **Search
+  Auctions** tab a plain right-click fills that tab's own item search box.) If you use LazyPig,
+  its Shift+Right-click split doesn't happen while the auction house is open; it still works
+  everywhere else.
+
+## Sorting the Browse list
+
+The Browse tab's price column has two headers: **Current Bid** and **Buyout**. The original only
+had Current Bid. Click a header to sort by it, and click it again to flip the order.
+
+When you open the auction house, the list starts sorted by **buyout, lowest first**, with the
+lowest bid deciding between equal buyouts. Clicking a header changes the sort until you next
+open the auction house.
+
+- `/auctioneer browse-sort bid` starts with the lowest bid first instead, `/auctioneer
+  browse-sort off` leaves the game's own order, and `/auctioneer browse-sort buyout` goes back.
+  `/auctioneer browse-sort` shows the setting.
+- **Only the page on screen is sorted.** The 1.12 game sorts the 50 auctions it has loaded. It
+  can't ask the server for a sorted list, so the cheapest auction may be on page 2.
+- It sorts each auction's whole price, not the price per item: a stack of 20 for 1g comes after
+  a single one for 10s.
+
+**For every auction of an item, cheapest per item first:** run an **Item Scan** for it, then on
+the **Search Auctions** tab pick the search type **Item**, type the name and search. That list
+holds every auction Auctioneer saw, from all pages. Switch its price column to *Buyout Per* to
+sort by the price per item.
+
+## Item name suggestions
+
+Type two or more letters in the Browse tab's **Name** box, or in a name box on the **Search
+Auctions** tab, and up to eight item names drop down under it: names that start with the
+letters, or have a word that does ("Li" finds Linen Cloth and Bolt of Linen Cloth). They come
+from every item Auctioneer has seen at your auction house.
+
+- **Click** a name to search for it. **Tab** fills in the top name, **Enter** searches what you
+  typed, as before.
+- **A picked name means exactly that item.** Picking Iron Bar lists Iron Bars only, not Dark Iron
+  Bars, on Browse (with a **Show all** button) and on Search Auctions. A name you type yourself
+  finds every item containing it, like the game's own search.
+- **Your profession's reagents come first.** Auctioneer reads your recipes whenever a profession
+  window is open, also away from the auction house, and ranks the reagents of recipes that still
+  give skill points: orange first, then yellow, then green, shown in that colour with the
+  profession's name. A tailor at skill 50 typing "Bo" gets Bolt of Linen Cloth at the top; at 200
+  it's Bolt of Mageweave. Open your profession windows once after installing so it knows them.
+- **Then names that start with the letters, then items for your level**, nearest your level
+  first, with the level shown (in red when it's above yours). Then the rest, the items you've
+  seen most often first.
+- Only recipes you've learned count, and recipes under a collapsed heading in the profession
+  window are skipped. Trade goods like cloth and bars have no level in the game's data, so
+  without the profession they're ordered by how often they're seen.
+- `/auctioneer name-suggest off` turns it off.
+
+## Search Auctions tab
+
+This tab looks through what your scans saw, and checks the live auction house for a named item.
+It starts on the **Item** search type, which lists every auction for a name. **Bids** and
+**Buyouts** list only bargains: auctions you could resell for a profit by their settings. When one
+of those finds auctions of the item but none that qualify, the line under the list says so
+("3 auctions found, none a bargain by these settings").
+
+- **Searches check the live auction house.** With an item name, every search type lists what
+  your saved scans have at once, so a recent scan fills it straight away. It then scans the
+  auction house for that name, and the list fills in page by page as the scan goes ("Scanning the
+  AH for Iron Bar... 5 found so far"). A Bid or Buyout pressed meanwhile waits for the scan.
+  Skipped while another scan runs, and for a name scanned to the end in the last minute. Without
+  an item name a search covers your saved scans, since checking the whole auction house means a
+  full scan. `/auctioneer search-scan off` searches only your saved scans.
+- **Best deals first.** Item searches show prices per item (Bid Per, Buyout Per) and list the
+  cheapest first; auctions without a buyout come last. Bid and Buyout searches list the most
+  profit first. Before, all of them were sorted by time left. Clicking a header still re-sorts.
+- **How old the results are.** The line under the list says how many auctions there are and when
+  they were seen ("12 auctions, seen 5 min to 3 h ago"), and each auction's tooltip
+  says when it was seen.
+- **Possibly gone** auctions, ones an unfinished scan hasn't seen again, are greyed out, and their
+  tooltip says so.
+- **Names.** A name picked from the suggestions finds only that item. A typed name finds every
+  item containing it, and brackets or dashes in it are just letters (a bracket used to break the
+  search).
+- **Right-click** an item in your bags to put its name in the item search box. Like a picked
+  suggestion, it finds exactly that item. Shift+Right-click puts the name in the side panel's
+  Item Scan box instead, as on every tab.
+- **Category Restriction** has subcategories: hover a category and pick one from the list that
+  opens beside it, like Trade Goods > Parts or Weapon > Two-Handed Swords. A subcategory name two
+  categories share shows its category too ("Armor: Miscellaneous"). An item the game hasn't
+  cached yet isn't counted in a subcategory.
+- **Saved searches:** **Save**, next to each **Search** button, saves the search with all its
+  settings. It's named after its item ("Citrine", or "Citrine (Bids)" for a Bid search), or with
+  no item after its type and category ("Buyouts: Weapon"); saving it again replaces it. Pick one
+  in the **Saved Searches** list at the top to fill it all in, and **Delete** removes the one
+  shown. A search saved without a name in an older version shows as **(no name)**.
 
 ## Post Auctions tab
 
@@ -166,6 +260,14 @@ search.
   auctions refresh when it's done. It's skipped while another scan is running, and for an item
   scanned in the last minute (posting several stacks scans once). `/auctioneer post-scan off`
   turns it off.
+- **Clicking the Browse tab** from Post Auctions with an item in the slot searches Browse for it,
+  so you can check the suggested price against what's actually for sale. If the item is still
+  being scanned, Browse shows it once the scan is done. It's skipped while another scan runs,
+  since Browse is busy then. `/auctioneer post-browse off` turns it off.
+  - Browse then lists **only that item**. The game's name search also finds longer names, so
+    "Iron Bar" brings up Dark Iron Bars too; those are hidden, and the line under the list says
+    how many, with a **Show all** button. Paging through the item keeps it that way; any other
+    search shows everything again. Clicking, bidding and buying work on the rows as shown.
 - **Undercut by** slider (1-100%) under the auction list. The starting and buyout prices follow
   it as you drag. It only applies to the item in the slot; the next item starts at your setting
   again (`/auctioneer pct-underlow`, default 5%). The suggested buyout, made for profit:
@@ -175,7 +277,7 @@ search.
   | Someone sells it cheaper than market | their price minus the slider % |
   | The cheapest seller is **above** market (e.g. it sold out at 50s, someone relists at 1g) | **their price** minus the slider %, so 95s, not 47s |
   | ...but absurdly high | at most 3x the market price (`/auctioneer pct-maxover`, default 200% over) |
-  | You're already the cheapest | priced against the cheapest *other* seller, not your own lower price |
+  | You're already the cheapest (one or more of yours at the bottom) | the cheapest auction that *isn't yours* minus the slider %, even if that's below your own listing; with nobody else selling it, market price minus the slider % |
   | Someone dumps it far below market (over 30% under) | market price minus the slider %: they're not chased down (`/auctioneer broker` finds them to buy out) |
   | Nobody else sells it | market price minus the slider % |
   | No price data at all | the vendor price x4 (`pct-markup`) |
