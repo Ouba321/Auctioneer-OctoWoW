@@ -1,13 +1,13 @@
 # Auctioneer-OctoWoW
 
 The classic **Auctioneer** auction-house addon for 1.12 (vanilla) clients, bundled
-with the two helper addons it needs and patched to load on OctoWoW. Current release: **v1.9.7**.
+with the two helper addons it needs and patched to load on OctoWoW. Current release: **v1.9.9**.
 
 | Addon | Version | What it does |
 |---|---|---|
-| Auctioneer | 3.6.2-octo-v1.9.7 (Platypus) | Scans the auction house and shows price info (**side scan panel**, **resumable scans**, **subcategory scans**, **Item Scan/Search**, **cheapest-first Browse sorting**, **item name suggestions**, a reworked **Search Auctions** tab, **cancelling several auctions at once**, Post Auctions improvements and **`/auc-glossary`**, see below) |
-| EnhTooltip | 3.8.0-octo-v1.9.7 (Kangaroo) | Adds Auctioneer's extra lines to item tooltips |
-| Stubby | 3.8.0-octo-v1.9.7 (Kangaroo) | Loads Auctioneer and EnhTooltip when they're needed (**patched**, see below) |
+| Auctioneer | 3.6.2-octo-v1.9.9 (Platypus) | Scans the auction house and shows price info (**side scan panel**, **resumable scans**, **subcategory scans**, **Item Scan/Search**, **cheapest-first Browse sorting**, **item name suggestions**, a reworked **Search Auctions** tab, **marking several auctions to bid on, buy out or cancel at once**, Post Auctions improvements and **`/auc-glossary`**, see below) |
+| EnhTooltip | 3.8.0-octo-v1.9.9 (Kangaroo) | Adds Auctioneer's extra lines to item tooltips |
+| Stubby | 3.8.0-octo-v1.9.9 (Kangaroo) | Loads Auctioneer and EnhTooltip when they're needed (**patched**, see below) |
 
 ## Install
 
@@ -24,19 +24,19 @@ with the two helper addons it needs and patched to load on OctoWoW. Current rele
 
 ## Version numbers
 
-Each release has one number, like **v1.9.7**, used everywhere:
+Each release has one number, like **v1.9.9**, used everywhere:
 
-- on GitHub: the release is tagged `v1.9.7`, and its zip is `Auctioneer-OctoWoW-v1.9.7.zip`
-- in the game's AddOns list: all three addons show `-octo-v1.9.7`. The part before it is the
+- on GitHub: the release is tagged `v1.9.9`, and its zip is `Auctioneer-OctoWoW-v1.9.9.zip`
+- in the game's AddOns list: all three addons show `-octo-v1.9.9`. The part before it is the
   addon's own version: 3.6.2 for Auctioneer, 3.8.0 for EnhTooltip and Stubby.
-- in [CHANGES.md](CHANGES.md): the heading `v1.9.7`
+- in [CHANGES.md](CHANGES.md): the heading `v1.9.9`
 
 Releases count up as v1.9.1, v1.9.2 and so on. **v2.0** is kept for the finished version, so
 the 1.x numbers mean it's still being worked on.
 
 **Which version do I have?** Look at the end of each addon's description in the AddOns list
-on the character screen. For v1.9.7 that's `[3.6.2-octo-v1.9.7 (Platypus)]` for Auctioneer and
-`[3.8.0-octo-v1.9.7 (Kangaroo)]` for EnhTooltip and Stubby. If the three don't show the same
+on the character screen. For v1.9.9 that's `[3.6.2-octo-v1.9.9 (Platypus)]` for Auctioneer and
+`[3.8.0-octo-v1.9.9 (Kangaroo)]` for EnhTooltip and Stubby. If the three don't show the same
 version, some folders are left over from an older download: copy all three again.
 
 - v1.2 and v1.3 only showed the version on Auctioneer, e.g. `[3.6.2-octo-v1.3 (Platypus)]`.
@@ -244,35 +244,62 @@ of those finds auctions of the item but none that qualify, the line under the li
   opens beside it, like Trade Goods > Parts or Weapon > Two-Handed Swords. A subcategory name two
   categories share shows its category too ("Armor: Miscellaneous"). An item the game hasn't
   cached yet isn't counted in a subcategory.
+- **Right-click** an auction in the list to search for it on the Browse tab. That used to be
+  Alt-click, which now marks auctions (see *Marking several auctions* below), and Alt+Shift-click
+  no longer bids or buys out at once: mark the auctions, then press Bid or Buyout.
+- **A refused or unanswered bid no longer stops bidding.** If the server says "Internal auction
+  error." or the like, or doesn't answer within 10 seconds, the chat says which bid it was and you
+  can try it again. Before, Bid and Buyout here did nothing more until a `/reload`.
+- **Sorting by a column keeps the selected auction highlighted.** Before, the highlight stayed on
+  the row, so it showed a different auction from the one Bid or Buyout would take.
 - **Saved searches:** **Save**, next to each **Search** button, saves the search with all its
   settings. It's named after its item ("Citrine", or "Citrine (Bids)" for a Bid search), or with
   no item after its type and category ("Buyouts: Weapon"); saving it again replaces it. Pick one
   in the **Saved Searches** list at the top to fill it all in, and **Delete** removes the one
   shown. A search saved without a name in an older version shows as **(no name)**.
 
-## Auctions tab: cancelling several at once
+## Marking several auctions: bid, buy out or cancel at once
 
-- **Shift-click** your auctions to mark several, and Shift-click one again to unmark it. The
-  one you had selected counts as the first. A plain click goes back to selecting one.
+On the **Browse**, **Bids**, **Auctions** and **Search Auctions** tabs:
+
+- **Shift-click** auctions to mark several, and Shift-click one again to unmark it. The one you
+  had selected counts as the first. A plain click goes back to selecting one. With the chat box
+  open, Shift-click on Browse and Search Auctions still links the item into chat, as before.
 - **Alt-click** marks every auction from the last one you clicked to this one: click the first,
   Alt-click the last. It counts down the whole list, so you can scroll in between. On a Mac
   keyboard that's Cmd if the game gets Cmd as Alt (WoW only knows Shift, Ctrl and Alt), or
-  Option.
-- **Cancel Auction** then reads **Cancel 3 Auctions**, and one warning covers them all: the
-  deposits you lose, and what bids on them cost you (5% of each bid, as for one auction). One
-  selected auction gets the same warning, with its deposit.
+  Option. While Browse shows one item only, a range leaves out the hidden auctions.
+- The buttons count what they'll do: **Bid (3)** and **Buyout (2)** on Browse, Bids and Search
+  Auctions, **Cancel 3 Auctions** on Auctions. One confirmation covers them all, with what they
+  cost in all. If you don't have that much it says so, and Accept can't be pressed.
+  - **Bid** places the lowest bid each auction takes; on Browse and Bids the Bid box shows what
+    they come to. It leaves out your own auctions and ones you're already winning.
+  - **Buyout** leaves out your own auctions and ones without a buyout. Buying out one you've bid
+    on costs the rest, as for one auction.
+  - On Search Auctions each goes through Auctioneer's bid manager, as one Bid or Buyout does there.
+- They go one at a time, a moment apart. Each bid waits for the server's answer to the one
+  before (for up to 10 seconds), and each auction is found again by its details, since the list
+  renumbers after every one. Each mark is used once, so it never buys more auctions than you marked. One that changed
+  meanwhile (someone bid on it, it sold) is left, and the chat says how many. If the auction
+  house closes or your money runs out halfway, the rest are left and the chat says how many.
+- A mark goes away when its auction changes. A new search, another page, sorting or leaving the
+  tab clears the marks (on Search Auctions, sorting keeps them on their auctions). After Shift- or
+  Alt-clicking, Bid, Buyout and Cancel Auction do nothing until you click an auction again, so they
+  can't act on one you unmarked.
+
+On the Auctions tab:
+
+- One warning covers all the marked auctions: the deposits you lose, and what bids on them cost
+  you (5% of each bid, as for one auction). One selected auction gets the same warning, with its
+  deposit.
 - **Deposits:** the game doesn't say what a posted auction's deposit was, so Auctioneer notes it
   when you post, from either tab, and the warning shows exactly that. For an auction posted with
   an older version it's worked out from the item's vendor price and time left: exact when it's
   Very Long (a 24 hour auction), otherwise "at least" the smallest it could have been, since the
   auction may have started longer.
-- They're cancelled one at a time, a moment apart, each one found again by its details, since
-  the list renumbers after every cancel. If the auction house closes halfway, the rest stay up
-  and the chat says how many.
-- A mark goes away when its auction changes (it gets a bid, or sells), and leaving the tab clears
-  the marks. After Shift- or Alt-clicking, or when the list has moved, Cancel Auction does
-  nothing until you click an auction again, so it can't cancel one you unmarked or one that
-  moved into the selected row.
+- The list renumbers when an auction sells, and Blizzard's selection stays on the position, so
+  Cancel Auction does nothing on a selected auction that moved: it can't cancel the one that moved
+  into the selected row.
 
 ## Post Auctions tab
 
@@ -290,11 +317,13 @@ of those finds auctions of the item but none that qualify, the line under the li
   since Browse is busy then. `/auctioneer post-browse off` turns it off.
   - Browse then lists **only that item**. The game's name search also finds longer names, so
     "Iron Bar" brings up Dark Iron Bars too; those are hidden. Scrolled to the end of the list,
-    the line under it says how many, with a **Show all** button. Paging through the item keeps it that way; any other
-    search shows everything again. Clicking, bidding and buying work on the rows as shown.
-- **Undercut by** slider (1-100%) under the auction list. The starting and buyout prices follow
-  it as you drag. It only applies to the item in the slot; the next item starts at your setting
-  again (`/auctioneer pct-underlow`, default 5%). The suggested buyout, made for profit:
+    the line under it says how many, with a **Show all** button. Paging through the item keeps
+    it that way; any other search shows everything again. Clicking, bidding and buying work on
+    the rows as shown.
+- **Undercut by** slider (0-100%; 0% matches the price it's based on) under the auction list.
+  The starting and buyout prices follow it as you drag. It only applies to the item in the slot;
+  the next item starts at your setting again (`/auctioneer pct-underlow`, default 5%). The
+  suggested buyout, made for profit:
 
   | Situation | Suggested buyout |
   |---|---|
@@ -309,6 +338,11 @@ of those finds auctions of the item but none that qualify, the line under the li
   "Market price" is the median buyout from your scans. These rules use what your last scan saw,
   so for a fresh look at one item, run an **Item Scan** for it first. The note under the price
   model says which rule applied ("Undercutting by 5%" in yellow, and so on).
+- **Match price**, the box beside "Price Based On:", prices the item against the cheapest
+  auction that isn't yours, however far above market it is, minus the slider: for when someone
+  has moved the price and you'd rather go with them than stay capped near the old market. At 0%
+  it matches their price to the copper. The note says "Matching the cheapest price" or
+  "Cheapest price minus 3%". Only for the item in the slot; the next item starts without it.
 - **Deposit** shows the real cost instead of "unknown", using OctoWoW's formula (the one its own
   Auctions tab uses: 2.5% of the stack's vendor price per 2 hours, plus 5% for every item the
   stack is short of a full one). Vendor prices come from Auctioneer's own list of about 9,000

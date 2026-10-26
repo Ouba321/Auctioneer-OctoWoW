@@ -5,6 +5,81 @@ Releases are numbered v1.2, v1.3 and so on, then v1.9.1, v1.9.2 until the finish
 v1.4, all three addons carry the release's number after `-octo-` (see *Version numbers* in the
 README).
 
+## v1.9.9 (2026-10-26)
+
+### Auctioneer 3.6.2-octo-v1.9.9
+
+- Marking several auctions works on Browse, Bids and Search Auctions as well as Auctions (a
+  player's idea): Shift-click marks or unmarks, Alt-click marks a range (Cmd on a Mac keyboard
+  where the game gets it as Alt), and Bid and Buyout do all the marked auctions after one
+  confirmation with the total cost.
+  - `AuctioneerUI.lua`: the Auctions tab's marking is now one set of functions for the three
+    Blizzard lists ("list", "bidder", "owner"), each with its marks, selection, range start and
+    rows (`lMarks`). Stubby hooks before `BrowseButton_OnClick` and `BidButton_OnClick` mark, as
+    the one before `AuctionsButton_OnClick` did. Browse rows and every item icon handle Shift-click
+    in Blizzard's XML (linking into chat), so their OnClick scripts are wrapped to mark while the
+    chat box is closed (`shiftClickMarks()`). Hooks after `AuctionFrameBrowse_Update` and
+    `AuctionFrameBid_Update` light the marked rows and count them on Bid and Buyout.
+  - Bids and buyouts go through the queue the cancels used (`AuctioneerUI_ActionQueueOnUpdate()`):
+    one per tick, each waiting for the server's answer to the one before
+    (`AucBidManager.IsBidInProgress`, now exported from `AucBidManager.lua`, see below), each
+    auction found again by its details. The amount is worked out as it's sent (`bidPrice()`): the
+    lowest bid it takes, or its buyout. Your own auctions, ones you're winning (for Bid) and ones
+    without a buyout (for Buyout) are left out. Auctions that changed are left and counted in
+    chat; it stops when the AH closes or the money runs out.
+  - One confirmation popup for every tab (`AuctioneerUI_ConfirmBids()`), with Accept disabled
+    when the total is more than you have.
+  - A new query (`QueryAuctionItems`), sorting (`SortAuctionItems`) and leaving the tab clear the
+    marks. On Browse, a range leaves out auctions hidden while it shows one item only.
+- Search Auctions (`AuctionFrameSearch.lua`): the marks are the results themselves
+  (`markedResults`), lit by the list, so they stay on their results when it's sorted. Bid and
+  Buyout with marks hand each result to the bid manager, as one Bid or Buyout does. Right-click on
+  a result now opens it on Browse, which was Alt-click; Alt+Shift-click no longer bids or buys out
+  at once. `AuctionFrameSearch.xml`: rows take right-clicks, and the buy cursor is gone.
+- `AucBidManager.lua`: bidding no longer gets stuck. Every bid waits for the server's answer to
+  the one before, and the bid manager only knew some answers: after "Internal auction error.",
+  "You must meet the min bid." or "Your bid increment is too small.", or no answer at all, it
+  waited forever, and Search Auctions' Bid and Buyout did nothing until a `/reload`. Those three
+  now count as a refused bid (`BidResultCodes["BidRefused"]`), and a bid not answered within 10
+  seconds is given up on (`giveUpOnUnansweredBids()`, `BidResultCodes["NoResponse"]`), before
+  each step of the bid queue too, since a placed bid also holds the queue's search. The chat
+  says which bid it was, and Search Auctions can try the auction again.
+- `ListTemplate.lua`: sorting keeps the selected row on its auction (`sortContent()`). Before, the
+  highlight stayed on the row position, so after sorting Search Auctions showed one auction
+  selected while Bid and Buyout acted on another. Rows marked by the list's owner
+  (`markedContent`) are lit.
+- `AucScanner.lua`: calls `AuctioneerUI_SetupMarking()`, which was
+  `AuctioneerUI_SetupAuctionsTab()`.
+- `Auctioneer/Auctioneer.toc`: version changed to `3.6.2-octo-v1.9.9`.
+
+### EnhTooltip and Stubby 3.8.0-octo-v1.9.9
+
+- `EnhTooltip/EnhTooltip.toc` and `Stubby/Stubby.toc`: version changed to `3.8.0-octo-v1.9.9`, to
+  match the release. No code changes.
+
+## v1.9.8 (2026-10-26)
+
+### Auctioneer 3.6.2-octo-v1.9.8
+
+- Post Auctions, from a player's screenshot:
+  - The price note "Competiton above market, capped at 200% over market" ran past the left
+    panel into the auction list. It's now "Capped at 200% over market" (`AucStatistic.lua`,
+    `determinePrice()`), and the note is limited to the panel's width
+    (`AuctionFramePost_SetupMatchPrice()`), so a long one can't do that again. `AucUtil.lua`,
+    `getWarnColor()`: the new notes keep their colours.
+  - **Match price**: a box beside "Price Based On:" that prices the item against the cheapest
+    auction that isn't yours, however far above market, minus the Undercut by slider, unrounded
+    (`AuctionFramePost_UpdatePriceModels()`, `AuctionFramePost_SetMatchPrice()`). Ticking it picks
+    Auctioneer's price model; a new item starts unticked.
+  - The Undercut by slider goes down to 0% (`AuctionFramePost.xml`, `AuctionFramePost_SetUndercut()`),
+    so a price can be matched exactly.
+- `Auctioneer/Auctioneer.toc`: version changed to `3.6.2-octo-v1.9.8`.
+
+### EnhTooltip and Stubby 3.8.0-octo-v1.9.8
+
+- `EnhTooltip/EnhTooltip.toc` and `Stubby/Stubby.toc`: version changed to `3.8.0-octo-v1.9.8`, to
+  match the release. No code changes.
+
 ## v1.9.7 (2026-10-25)
 
 ### Auctioneer 3.6.2-octo-v1.9.7
